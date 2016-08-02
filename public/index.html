@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html ng-app="profileUpdater">
+  <head>
+    <meta charset="utf-8">
+    <title>Profile Updater</title>
+
+    <link href="vendor/materialize/css/materialize.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body ng-cloak>
+    <main class="container">
+      <div class="row">
+        <div class="col s12 offset-m2 m8 offset-l3 l6">
+          <div class="card">
+            <form name="user" ng-controller="ProfileController as profile" ng-submit="profile.update(); user.$setPristine();" novalidate>
+              <div class="card-content">
+                <span class="card-title">Update User Profile</span>
+                <div class="input-field">
+                  <input name="username" type="text" placeholder="Username" ng-class="{'invalid': (user.username.$invalid && user.username.$dirty) || profile.usernameExists}" ng-model="profile.user.username" ng-blur="profile.checkUsername()" required>
+
+                  <label for="username" ng-class="{'active': user.username}">
+                    Username
+                    <span ng-class="{'orange-text text-darken-2': user.username.$invalid && user.username.$dirty}" ng-show="user.username.$error.required && user.username.$dirty">
+                      - Please enter a username.
+                    </span>
+                    <span class="orange-text text-darken-2" ng-show="profile.usernameExists">
+                      - {{ profile.user.username }} already exists.
+                    </span>
+                  </label>
+                </div>
+
+                <div class="input-field">
+                  <input name="email" type="email" placeholder="Email" ng-class="{'invalid': (user.email.$invalid && user.email.$dirty) || profile.emailExists}" ng-model="profile.user.email" ng-blur="profile.checkEmail()" required>
+
+                  <label for="email" ng-class="{'active': user.email}">
+                    Email
+                    <span ng-class="{'orange-text text-darken-2': user.email.$invalid && user.email.$dirty}" ng-show="(user.email.$error.email || user.email.$error.required) && user.email.$dirty">
+                      - Please enter a valid email.
+                    </span>
+                    <span class="orange-text text-darken-2" ng-show="profile.emailExists">
+                      - {{ profile.user.email }} already exists.
+                    </span>
+                  </label>
+                </div>
+
+                <div class="input-field">
+                  <input name="password" type="password" placeholder="Password" ng-class="{'invalid': user.password.$invalid && user.password.$dirty}" ng-model="profile.user.password" required>
+
+                  <label for="password" ng-class="{'active': user.password}">
+                    Password <span ng-class="{'orange-text text-darken-2': user.password.$invalid && user.password.$dirty}" ng-show="user.password.$error.required && user.password.$dirty">
+                      - Please enter a password.
+                    </span>
+                  </label>
+                </div>
+
+                <div class="input-field">
+                  <input name="passwordConfirm" type="password" placeholder="Confirm Password" ng-class="{'invalid': (profile.user.password !== profile.user.passwordConfirm) && user.passwordConfirm.$dirty}" ng-model="profile.user.passwordConfirm" required>
+
+                  <label for="passwordConfirm">
+                    Confirm Password <span ng-class="{'orange-text text-darken-2': (profile.user.password !== profile.user.passwordConfirm) && user.passwordConfirm.$dirty}" ng-show="(profile.user.password !== profile.user.passwordConfirm) && user.passwordConfirm.$dirty">
+                      - Passwords do not match.
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="card-action">
+                <div>
+                  <input type="button" id="cancel" value="Cancel" class="waves-effect waves-red grey-text btn-flat right" ng-click="profile.refresh(); user.$setPristine();">
+                </div>
+
+                <div>
+                  <input type="submit" id="save" value="Save" class="btn right" ng-disabled="user.$invalid || (profile.user.password !== profile.user.passwordConfirm) || profile.usernameExists || profile.emailExists">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="vendor/jquery/jquery-3.1.0.min.js"></script>
+    <script src="vendor/materialize/js/materialize.min.js"></script>
+    <script src="vendor/angular/angular.min.js"></script>
+
+    <script src="app/app.module.js"></script>
+    <script src="app/user.service.js"></script>
+    <script src="app/profile.controller.js"></script>
+  </body>
+</html>

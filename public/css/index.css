@@ -1,0 +1,12 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.card .card-action {
+  height: 77px;
+}
+
+body {
+  background-color: #FAFAFA;
+  padding-top: 60px;
+}
