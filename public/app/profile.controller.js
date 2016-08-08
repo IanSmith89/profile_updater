@@ -12,19 +12,14 @@
 
     vm.update = update;
     vm.refresh = activate;
-    vm.checkUsername = checkUsername;
-    vm.checkEmail = checkEmail;
-    vm.user = {};
 
     activate();
 
     function activate() {
-      vm.usernameExists = false;
-      vm.emailExists = false;
-
       return userService.getUser(1)
         .then((user) => {
           vm.user = user;
+          userService.setLoggedInUser(user);
         })
         .catch((err) => {
           throw err;
@@ -41,31 +36,8 @@
         password
       })
         .then((user) => {
-          vm.user = user;
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
-
-    function checkUsername() {
-      return userService.checkUsername(vm.user.username)
-        .then((status) => {
-          $timeout(() => {
-            vm.usernameExists = status;
-          }, 2000);
-        })
-        .catch((err) => {
-          throw err;
-        });
-    }
-
-    function checkEmail() {
-      return userService.checkEmail(vm.user.email)
-        .then((status) => {
-          $timeout(() => {
-            vm.emailExists = status;
-          }, 3000);
+          vm.user.passwordConfirm = '';
+          userService.setLoggedInUser(user);
         })
         .catch((err) => {
           throw err;

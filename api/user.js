@@ -18,7 +18,11 @@ router.get('/api/user/email_exists', (req, res, _next) => {
     }
   }
 
-  res.send(exists);
+  if (exists) {
+    res.sendStatus(409);
+  } else {
+    res.sendStatus(200);
+  }
 });
 
 router.get('/api/user/username_exists', (req, res, _next) => {
@@ -34,7 +38,11 @@ router.get('/api/user/username_exists', (req, res, _next) => {
     }
   }
 
-  res.send(exists);
+  if (exists) {
+    res.sendStatus(409);
+  } else {
+    res.sendStatus(200);
+  }
 });
 
 router.get('/api/user/:id', (req, res, _next) => {

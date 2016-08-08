@@ -8,11 +8,15 @@
   userService.$inject = ['$http'];
 
   function userService($http) {
+    let loggedInUser = {};
+
     const service = {
       getUser,
       putUser,
       checkUsername,
-      checkEmail
+      checkEmail,
+      getLoggedInUser,
+      setLoggedInUser
     };
 
     return service;
@@ -40,7 +44,7 @@
     function checkUsername(username) {
       return $http.get(`/api/user/username_exists?username=${username}`)
         .then((res) => {
-          return res.data;
+          return res;
         })
         .catch((err) => {
           throw err;
@@ -50,11 +54,21 @@
     function checkEmail(email) {
       return $http.get(`/api/user/email_exists?email=${email}`)
         .then((res) => {
-          return res.data;
+          return res;
         })
         .catch((err) => {
           throw err;
         });
+    }
+
+    function getLoggedInUser() {
+      return loggedInUser;
+    }
+
+    function setLoggedInUser(user) {
+      loggedInUser.id = user.id;
+      loggedInUser.username = user.username;
+      loggedInUser.email = user.email;
     }
   }
 }());
